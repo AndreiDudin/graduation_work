@@ -16,17 +16,47 @@ def current_datetime():
     now = datetime.now()
     return now
 
+
 class ApiClient:
     def __init__(self, base_address):
         self.base_address = base_address
 
-    def create_post_on_wall(self, message=None, additional_params=None):
-        url = f"{self.base_address}/wall.post"
+    # Создание комментария к посту
+    def wall_createComment(self, post_id, additional_params=None):
+        url = f"{self.base_address}/wall.createComment"
         params = {
             'access_token': token_wall,
             'v': version,
             'owner_id': owner_id,
-#            'message': f"{message}"
+            'post_id': post_id
+        }
+        if additional_params:
+            params.update(additional_params)
+        response = requests.post(url, params=params)
+        return response
+
+    # Получение информации о комментарии к посту на стене
+    def wall_getComment(self, comment_id, additional_params=None):
+        url = f"{self.base_address}/wall.getComment"
+        params = {
+            'access_token': token_wall,
+            'v': version,
+            'owner_id': owner_id,
+            'comment_id': comment_id,
+            'extended': 1
+        }
+        if additional_params:
+            params.update(additional_params)
+        response = requests.post(url, params=params)
+        return response
+
+    # Размещение поста на стене группы
+    def create_post_on_wall(self, additional_params=None):
+        url = f"{self.base_address}/wall.post"
+        params = {
+            'access_token': token_wall,
+            'v': version,
+            'owner_id': owner_id
         }
         if additional_params:
             params.update(additional_params)
@@ -92,4 +122,17 @@ class ApiClient:
         if additional_params:
             params.update(additional_params)
         response = requests.post(url, params)
+        return response
+
+    # Добавление ссылки в группу
+    def groups_addLink(self, additional_params=None):
+        url = f"{self.base_address}/groups.addLink"
+        params = {
+            'access_token': admin_token,
+            'v': version,
+            'group_id': 217125833
+        }
+        if additional_params:
+            params.update(additional_params)
+        response = requests.post(url, params=params)
         return response

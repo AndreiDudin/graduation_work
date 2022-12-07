@@ -46,6 +46,7 @@ def test_check_cyrillic_text_in_post(vk_api):
 
 
 @allure.feature('Операции с постами на стене')
+@allure.story('Айди созданного поста есть в списке всех постов')
 def test_check_new_post_is_added(vk_api, current_datetime):
     with allure.step('Создание нового поста'):
         create_post = vk_api.create_post_on_wall(additional_params={'message': current_datetime}).text
@@ -60,6 +61,7 @@ def test_check_new_post_is_added(vk_api, current_datetime):
 
 
 @allure.feature('Операции с постами на стене')
+@allure.story('Айди созданного поста является первым с списке всех постов')
 def test_check_new_post_is_first(vk_api,current_datetime):
     with allure.step('Создание нового поста'):
         create_post = vk_api.create_post_on_wall(additional_params={'message': current_datetime}).text
@@ -74,6 +76,7 @@ def test_check_new_post_is_first(vk_api,current_datetime):
 
 
 @allure.feature('Операции с постами на стене')
+@allure.story('Удаление успешно созданного поста')
 def test_delete_post_after_publication(vk_api,current_datetime):
     with allure.step('Создание нового поста'):
         create_post = vk_api.create_post_on_wall(additional_params={'message': current_datetime}).text
