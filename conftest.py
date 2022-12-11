@@ -2,7 +2,6 @@ import pytest
 import requests
 import allure
 from datetime import datetime
-
 from settings import token, version, group_id, token_wall, owner_id, admin_token
 
 
@@ -78,6 +77,7 @@ class ApiClient:
         response = requests.post(url, params)
         return response
 
+
     def wall_getById(self, posts):
         url = f"{self.base_address}/wall.getById"
         params = {
@@ -112,6 +112,7 @@ class ApiClient:
         response = requests.post(url, params)
         return response
 
+    # Получение иинформации по группе по ее id
     def groups_getById(self, additional_params=None):
         url = f"{self.base_address}/groups.getById"
         params = {

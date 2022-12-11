@@ -100,3 +100,19 @@ def test_delete_post_after_publication(vk_api,current_datetime):
         ids_all_after.append(current_id)
     with allure.step('Проверка, что айди удаленного поста нет в списке существующих'):
         assert new_post_id not in ids_all_after, f"Актуальное количество постов {wall_posts_after_delete}"
+
+
+@allure.feature('Операции с постами на стене')
+@allure.story('Создание поста на стене')
+@allure.title('Проверка, что созданный пост содержит правильный текст')
+def test_check_on_wall(vk_api):
+    with allure.step('Создание нового поста'):
+        create_post = vk_api.create_post_on_wall(
+            additional_params={'attachments': 'photo5474852_457247970',
+                               'message': 'Текст к видео'}).text
+    with allure.step('Берем айдишник созданного на стене поста'):
+        new_post_id = json.loads(create_post.replace("'", '"'))['response']['post_id']
+    wall_posts = vk_api.wall_get().json()['response']['items']
+    for post in wall_posts:
+        if post['id'] == new_post_id:
+            assert post['text'] == 'Текст к видео'

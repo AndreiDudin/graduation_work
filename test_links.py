@@ -1,11 +1,9 @@
-from time import sleep
-from settings import token, version, group_id, token_wall, admin_token
 import allure
 
 
 @allure.feature('Ссылки в группе')
 @allure.story('Успешное создание. Проверка имени созданной ссылки')
-@allure.title('В ответе возвращается верное значение в поле "name"')
+@allure.title('В ответе сервера возвращается "name"= "почта"')
 def test_link_name(vk_api):
     with allure.step('Добавление ссылки'):
         response = vk_api.groups_addLink(additional_params={
@@ -18,7 +16,7 @@ def test_link_name(vk_api):
 
 @allure.feature('Ссылки в группе')
 @allure.story('Успешное создание. Проверка описания созданной ссылки')
-@allure.title('Значение поля "desc" = "www.mail.ru"')
+@allure.title('В ответе сервера возвращается "desc" = "www.mail.ru"')
 def test_check_link_description(vk_api):
     with allure.step('Добавление ссылки'):
         response = vk_api.groups_addLink(additional_params={
@@ -31,7 +29,7 @@ def test_check_link_description(vk_api):
 
 @allure.feature('Ссылки в группе')
 @allure.story('Успешное создание. Проверка урла созданной ссылки')
-@allure.title('В ответе возвращается url созданной ссылки')
+@allure.title('В ответе возвращается "url"="https://www.mail.ru"')
 def test_check_link_url(vk_api):
     with allure.step('Добавление ссылки'):
         response = vk_api.groups_addLink(additional_params={
@@ -44,7 +42,7 @@ def test_check_link_url(vk_api):
 
 @allure.feature('Ссылки в группе')
 @allure.story('Обязательные/необязательные параметры в запросе.')
-@allure.title('Успешное создание ссылки при отсутствии необязательного параметра "text"')
+@allure.title('В ответе возвращается "id" ссылки при отсутствии необязательного параметра "text"')
 def test_check_link_id(vk_api):
     with allure.step('Добавление ссылки'):
         response = vk_api.groups_addLink(additional_params={
@@ -72,3 +70,35 @@ def test_without_params_check_code_100(vk_api):
         response = vk_api.groups_addLink(additional_params={}).json()
     with allure.step('Проверяем, что в ответе получаем код 100'):
         assert response['error']['error_code'] == 100
+
+
+@allure.feature('Ссылки в группе')
+@allure.story('Успешное создание. Проверка в ответе сервера имени созданной ссылки')
+@allure.title('Проверка имени у созданной ссылки')
+def test_link_name(vk_api):
+    with allure.step('Добавление ссылки'):
+        id = vk_api.groups_addLink(additional_params={
+            'link': 'https://www.mail.ru',
+            'text': 'почта'}).json()['response']['id']
+    with allure.step('Проверяем, что имя ссылки = "почта"'):
+        links = vk_api.groups_getById(additional_params={'fields': 'links'}).json()['response'][0]['links']
+        link_ids = []
+        for i in links:
+            link_ids.append(i['id'])
+    with allure.step('Проверяем, что id созданной ссылки находится среди всех ссылок сообщества'):
+        assert id in link_ids
+
+
+@allure.feature('Ссылки в группе')
+@allure.story('Успешное создание. Проверка имени созданной ссылки')
+@allure.title('Проверка имени созданной в группе ссылки')
+def test_link_name_from_group(vk_api):
+    with allure.step('Добавление ссылки получение ее id'):
+        link_id = vk_api.groups_addLink(additional_params={
+            'link': 'https://www.mail.ru',
+            'text': 'почта'}).json()['response']['id']
+    with allure.step('Проверяем, что имя ссылки = "почта"'):
+        links = vk_api.groups_getById(additional_params={'fields': 'links'}).json()['response'][0]['links']
+        for link in links:
+            if link['id'] == link_id:
+                assert link['name'] == 'почта'

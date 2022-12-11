@@ -1,6 +1,3 @@
-from time import sleep
-
-from settings import token, version, group_id, token_wall,admin_token
 import allure
 
 @allure.feature('Редактирование группы')
