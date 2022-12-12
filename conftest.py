@@ -1,6 +1,5 @@
 import pytest
 import requests
-import allure
 from datetime import datetime
 from settings import token, version, group_id, token_wall, owner_id, admin_token
 
