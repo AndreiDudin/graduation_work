@@ -1,5 +1,9 @@
 import allure
 
+version = '5.131'
+group_id = '217125833'
+owner_id = '-217125833'
+
 @allure.feature('Редактирование параметров группы')
 @allure.title('Изменение описания сообщества')
 def test_check_group_description_value_after_update(vk_api):

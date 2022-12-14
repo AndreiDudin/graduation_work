@@ -1,8 +1,10 @@
 from time import sleep
-from settings import token, version, group_id, token_wall, owner_id
+#from settings import token, version, group_id, token_wall, owner_id
 import allure
 import json
-
+version = '5.131'
+group_id = '217125833'
+owner_id = '-217125833'
 
 @allure.feature('Посты на стене')
 @allure.story('Работа с комбинациями аттачментов')
@@ -60,7 +62,9 @@ def test_check_cyrillic_text_in_post(vk_api):
 @allure.title('Айди созданного поста есть в списке всех постов')
 def test_check_new_post_is_added(vk_api, current_datetime):
     with allure.step('Создание нового поста'):
-        create_post = vk_api.create_post_on_wall(additional_params={'message': current_datetime}).text
+        create_post = vk_api.create_post_on_wall(
+            additional_params={'message': current_datetime}
+        ).text
     with allure.step('Берем айдишник созданного на стене поста'):
         new_post_id = json.loads(create_post.replace("'", '"'))['response']['post_id']
     post_id = vk_api.wall_get().json()['response']['items']
@@ -76,7 +80,9 @@ def test_check_new_post_is_added(vk_api, current_datetime):
 @allure.title('Айди созданного поста является первым с списке всех постов')
 def test_check_new_post_is_first(vk_api, current_datetime):
     with allure.step('Создание нового поста'):
-        create_post = vk_api.create_post_on_wall(additional_params={'message': current_datetime}).text
+        create_post = vk_api.create_post_on_wall(
+            additional_params={'message': current_datetime}
+        ).text
     with allure.step('Берем айдишник созданного на стене поста'):
         new_post_id = json.loads(create_post.replace("'", '"'))['response']['post_id']
     post_id = vk_api.wall_get().json()['response']['items']
@@ -91,7 +97,9 @@ def test_check_new_post_is_first(vk_api, current_datetime):
 @allure.title('Удаление успешно созданного поста')
 def test_delete_post_after_publication(vk_api, current_datetime):
     with allure.step('Создание нового поста'):
-        create_post = vk_api.create_post_on_wall(additional_params={'message': current_datetime}).text
+        create_post = vk_api.create_post_on_wall(
+            additional_params={'message': current_datetime}
+        ).text
     sleep(1)
     with allure.step('Берем айдишник созданного на стене поста'):
         new_post_id = str(json.loads(create_post.replace("'", '"'))['response']['post_id'])

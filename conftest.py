@@ -1,8 +1,11 @@
 import pytest
 import requests
 from datetime import datetime
-from settings import token, version, group_id, token_wall, owner_id, admin_token
+from settings import version, token_wall, admin_token
 
+version = '5.131'
+group_id = '217125833'
+owner_id = '-217125833'
 
 @pytest.fixture
 def vk_api():

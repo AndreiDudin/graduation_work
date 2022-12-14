@@ -1,5 +1,4 @@
 import pytest
-from settings import token, version, group_id
 import allure
 from group_fields import fields
 

@@ -92,8 +92,11 @@ def test_check_creating_comment_with_video(vk_api):
     with allure.step('Берем айдишник созданного на стене поста'):
         new_post_id = json.loads(create_post.replace("'", '"'))['response']['post_id']
     with allure.step('Создаем комментарий с видео и берем его айдишник'):
-        comment = vk_api.wall_createComment(new_post_id, additional_params={
-            'attachments': 'video-42793953_456242346'}).json()
+        comment = vk_api.wall_createComment(
+            new_post_id,
+            additional_params={
+                'attachments': 'video-42793953_456242346'}
+        ).json()
     comment_id = comment['response']['comment_id']
     with allure.step('Проверка, что поле Id содержит значение айдишника комментария'):
         assert comment_id
